@@ -1,0 +1,13 @@
+{
+  "dependencies": {
+    "@google-cloud/firestore": "^6.0.0",
+    "express": "^4.18.1",
+    "firebase": "^9.9.2",
+    "firebase-admin": "^11.0.1",
+    "firebase-functions": "^3.22.0",
+    "module": "^1.2.5"
+  },
+  "devDependencies": {
+    "@babel/helper-compilation-targets": "^7.18.9"
+  }
+}

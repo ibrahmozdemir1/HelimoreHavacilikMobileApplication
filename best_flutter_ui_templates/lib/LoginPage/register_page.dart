@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:best_flutter_ui_templates/LoginPage/login_page.dart';
-import 'package:best_flutter_ui_templates/bottom_navigation_view/bottom_bar_view.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:best_flutter_ui_templates/navigation_home_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -13,6 +13,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class RegisterPage extends StatefulWidget {
   @override
   _RegisterPageState createState() => _RegisterPageState();
+}
+
+Future<void> messageHandler(RemoteMessage message) async {
+  print('background message ${message.notification!.body}');
 }
 
 class _RegisterPageState extends State<RegisterPage> {
@@ -52,6 +56,11 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Stack(children: <Widget>[
       Container(
@@ -78,8 +87,10 @@ class _RegisterPageState extends State<RegisterPage> {
                   child: Padding(
                     padding: const EdgeInsets.all(24.0),
                     child: Column(
-                      children: [
+                      children: <Widget>[
                         Container(
+                          height: 50,
+                          width: 250,
                           child: Image.asset("assets/images/helimore-logo.png"),
                         ),
                         Center(

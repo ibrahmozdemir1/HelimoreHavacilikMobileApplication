@@ -1,16 +1,30 @@
 import 'dart:io';
 import 'package:best_flutter_ui_templates/LoginPage/login_page.dart';
+import 'package:best_flutter_ui_templates/firebase/firebase_options.dart';
 import 'package:best_flutter_ui_templates/themes/app_theme.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   await SystemChrome.setPreferredOrientations(<DeviceOrientation>[
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown
-  ]).then((_) => runApp(MyApp()));
+  ]).then((_) {
+    initializeFirebase();
+    runApp(MyApp());
+  });
+}
+
+Future<FirebaseApp> initializeFirebase() async {
+  FirebaseApp firebaseApp = await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  return firebaseApp;
 }
 
 class MyApp extends StatelessWidget {

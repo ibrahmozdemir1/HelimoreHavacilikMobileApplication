@@ -1,0 +1,29 @@
+{
+    // Olası öznitelikler hakkında bilgi edinmek için IntelliSense kullanın.
+    // Mevcut özniteliklerin açıklamalarını görüntülemek için üzerine gelin.
+    // Daha fazla bilgi için şu adresi ziyaret edin: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        
+        {
+            "name": "best_flutter_ui_templates",
+            "cwd": "best_flutter_ui_templates",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "best_flutter_ui_templates (profile mode)",
+            "cwd": "best_flutter_ui_templates",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "best_flutter_ui_templates (release mode)",
+            "cwd": "best_flutter_ui_templates",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+    ]
+}

@@ -1,6 +1,8 @@
 // ignore_for_file: unused_local_variable
+import 'package:best_flutter_ui_templates/LoginPage/register_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -25,6 +27,12 @@ var sirketAdres;
 
 Future<void> getSirketData() async {
   User? currentUser = FirebaseAuth.instance.currentUser;
+  var token;
+  var messaging = FirebaseMessaging.instance.getToken().then((value) {
+    token = value;
+    print(value);
+  });
+
   //query the user photo
   DocumentSnapshot pathData = await FirebaseFirestore.instance
       .collection('sirket')
@@ -38,6 +46,11 @@ Future<void> getSirketData() async {
     sirketbileklikSayisi = sirketVeri?['bileklikSayisi'];
     sirketAdres = sirketVeri?['sirketAdres'];
   }
+
+  FirebaseFirestore.instance
+      .collection('sirket')
+      .doc(currentUser?.uid)
+      .update({'sirketDeviceToken': token});
 }
 
 class _InformationScreenState extends State<InformationScreen>
@@ -55,6 +68,23 @@ class _InformationScreenState extends State<InformationScreen>
   double topBarOpacity = 0.0;
   @override
   void initState() {
+    FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+      alert: true, // Required to display a heads up notification
+      badge: true,
+      sound: true,
+    );
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      if (message.notification != null) {
+        print('Got a message whilst in the foreground!');
+        print('Message data: ${message.data}');
+
+        if (message.notification != null) {
+          print(
+              'Message also contained a notification: ${message.notification}');
+        }
+      }
+    });
+    FirebaseMessaging.onBackgroundMessage(messageHandler);
     super.initState();
   }
 
@@ -82,13 +112,13 @@ class _InformationScreenState extends State<InformationScreen>
                         height: 30,
                       ),
                       CircleAvatar(
-                        radius: 60,
+                        radius: 50,
                         backgroundImage: AssetImage('assets/images/logo1.jpg'),
                       ),
                       Text(
                         "${sirketisim}",
                         style: TextStyle(
-                          fontSize: 30.0,
+                          fontSize: 26.0,
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
                           fontFamily: "Pacifico",
@@ -97,14 +127,14 @@ class _InformationScreenState extends State<InformationScreen>
                       Text(
                         "${sirketsahibi}",
                         style: TextStyle(
-                            fontSize: 20,
+                            fontSize: 16,
                             color: Colors.blueGrey[200],
                             letterSpacing: 2.5,
                             fontWeight: FontWeight.bold,
                             fontFamily: "Source Sans Pro"),
                       ),
                       SizedBox(
-                        height: 20,
+                        height: 10,
                         width: 200,
                         child: Divider(
                           color: Colors.white,
@@ -125,7 +155,7 @@ class _InformationScreenState extends State<InformationScreen>
                             "${sirketmail}",
                             style: TextStyle(
                                 color: Colors.teal,
-                                fontSize: 20,
+                                fontSize: 16,
                                 fontFamily: "Source Sans Pro"),
                           ),
                         ),
@@ -145,7 +175,7 @@ class _InformationScreenState extends State<InformationScreen>
                             "Tanımlı Bileklik Sayısı : ${sirketbileklikSayisi}",
                             style: TextStyle(
                                 color: Colors.teal,
-                                fontSize: 20,
+                                fontSize: 16,
                                 fontFamily: "Source Sans Pro"),
                           ),
                         ),
@@ -165,13 +195,10 @@ class _InformationScreenState extends State<InformationScreen>
                             "${sirketAdres}",
                             style: TextStyle(
                                 color: Colors.teal,
-                                fontSize: 20,
+                                fontSize: 16,
                                 fontFamily: "Source Sans Pro"),
                           ),
                         ),
-                      ),
-                      SizedBox(
-                        height: 10,
                       ),
                       currentUser!.emailVerified
                           ? Text(

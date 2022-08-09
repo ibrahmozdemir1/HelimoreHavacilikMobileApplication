@@ -1,4 +1,5 @@
 import 'package:best_flutter_ui_templates/themes/app_theme.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -113,7 +114,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
             children: <Widget>[
               ListTile(
                 title: Text(
-                  'Sign Out',
+                  'Çıkış',
                   style: TextStyle(
                     fontFamily: AppTheme.fontName,
                     fontWeight: FontWeight.w600,
@@ -127,12 +128,14 @@ class _HomeDrawerState extends State<HomeDrawer> {
                   color: Colors.red,
                 ),
                 onTap: () async {
+                  outNotification();
                   isSigningOut
                       ? CircularProgressIndicator()
                       : setState(() {
                           isSigningOut = true;
                         });
                   await FirebaseAuth.instance.signOut();
+
                   setState(() {
                     isSigningOut = false;
                   });
@@ -156,6 +159,14 @@ class _HomeDrawerState extends State<HomeDrawer> {
 
   void onTapped() {
     print('Doing Something...'); // Print to console.
+  }
+
+  void outNotification() {
+    User? currentUser = FirebaseAuth.instance.currentUser;
+    FirebaseFirestore.instance
+        .collection('sirket')
+        .doc(currentUser?.uid)
+        .update({'sirketDeviceToken': ''});
   }
 
   Widget inkwell(DrawerList listData) {

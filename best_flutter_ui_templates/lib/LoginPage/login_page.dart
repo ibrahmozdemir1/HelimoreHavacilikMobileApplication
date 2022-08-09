@@ -32,6 +32,17 @@ class _LoginPageState extends State<LoginPage> {
     );
 
     User? user = FirebaseAuth.instance.currentUser;
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+
+    NotificationSettings settings = await messaging.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
 
     if (user != null) {
       Navigator.of(context).pushReplacement(
@@ -46,27 +57,17 @@ class _LoginPageState extends State<LoginPage> {
     return firebaseApp;
   }
 
-  Future<void> getMessage() async {
-    await FirebaseMessaging.instance.setAutoInitEnabled(true);
-
-    final fcmToken = await FirebaseMessaging.instance.getToken();
-
-    FirebaseMessaging.instance.onTokenRefresh.listen((fcmToken) {
-      // TODO: If necessary send token to application server.
-
-      // Note: This callback is fired at each app startup and whenever a new
-      // token is generated.
-    }).onError((err) {
-      // Error getting token.
-    });
-  }
-
   @override
   void dispose() {
     emailTextController.dispose();
     passwordTextController.dispose();
     // TODO: implement dispose
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override
@@ -94,7 +95,6 @@ class _LoginPageState extends State<LoginPage> {
                 future: initializeFirebase(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
-                    getMessage();
                     return Padding(
                       padding: const EdgeInsets.all(30.0),
                       child: Form(
