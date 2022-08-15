@@ -429,7 +429,7 @@ class _BileklikVeriScreenState extends State<BileklikVeriScreen> {
                                     Expanded(
                                       child: Padding(
                                         padding:
-                                            const EdgeInsets.only(left: 60),
+                                            const EdgeInsets.only(left: 45),
                                         child: Center(
                                           child: Row(
                                             children: <Widget>[

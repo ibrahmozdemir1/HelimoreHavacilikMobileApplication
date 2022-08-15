@@ -56,21 +56,27 @@ class _MapsScreenState extends State<MapsScreen> {
             ),
           ),
           Center(
-            child: Padding(
-              padding: const EdgeInsets.only(top: 600),
-              child: IconButton(
-                  iconSize: 70,
-                  onPressed: () async {
-                    User? user = FirebaseAuth.instance.currentUser;
-                    if (user != null) {
-                      Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  NavigationHomeScreen(user: user)),
-                          (Route<dynamic> route) => false);
-                    }
-                  },
-                  icon: Image.asset("assets/helimore_app/tab_4.png")),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: 200,
+                ),
+                IconButton(
+                    iconSize: 70,
+                    onPressed: () async {
+                      User? user = FirebaseAuth.instance.currentUser;
+                      if (user != null) {
+                        Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    NavigationHomeScreen(user: user)),
+                            (Route<dynamic> route) => false);
+                      }
+                    },
+                    icon: Image.asset("assets/helimore_app/tab_4.png")),
+              ],
             ),
           ),
         ],

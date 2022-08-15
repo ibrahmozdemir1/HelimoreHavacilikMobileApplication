@@ -36,8 +36,6 @@ class _RegisterPageState extends State<RegisterPage> {
   final focusEmail = FocusNode();
   final focusPassword = FocusNode();
 
-  bool isProcessing = false;
-
   @override
   void dispose() {
     nameTextController.dispose();
